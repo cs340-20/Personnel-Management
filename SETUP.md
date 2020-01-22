@@ -5,6 +5,8 @@ XAMPP HOSTING:
   Xampp hosting will allow us to run our page and database on a local host. 
   Download Xampp and use the file structure below to setup the webpage directory.
   Download link: https://www.apachefriends.org/download.html
+  Once you set up your file structure below, start Xampp and activate Apache and MySQL. 
+  localhost/index.php will get you to the homepage.
 
 
 FILE STRUCTURE: 
