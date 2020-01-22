@@ -7,6 +7,8 @@ XAMPP HOSTING:
   Download link: https://www.apachefriends.org/download.html
   Once you set up your file structure below, start Xampp and activate Apache and MySQL. 
   localhost/index.php will get you to the homepage.
+  Once you've started hosting with Xampp, go to localhost/phpmyadmin and select 'import'. 
+  Import the Personnel.sql file to get the databases that we'll start with.
 
 
 FILE STRUCTURE: 
@@ -15,6 +17,7 @@ FILE STRUCTURE:
   PM-css contains all css files for the web application
   PM-pages contains all webpage files (html, php)
   PM-extras contains all object files (php function definitions and other reusable blocks)
+  
   
   
 Editor: 
