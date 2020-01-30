@@ -6,40 +6,21 @@
 
     <meta charset="UTF-8">
 
-    <style>
-        table {
-            border: 1px solid #CCCCCC;
-            border-collapse: collapse;
-            
-            margin-left: auto;
-            margin-right: auto;
+    <!-- javascript to control select/dis-select all box -->
+    <script type="text/javascript">function CheckUncheckAll(){
+        var  selectAllCheckbox=document.getElementById("checkUncheckAll");
+        if(selectAllCheckbox.checked==true){
+            var checkboxes =  document.getElementsByName("rowSelectCheckBox");
+            for(var i=0, n=checkboxes.length;i<n;i++) {
+                checkboxes[i].checked = true;
+            }
+        } else {
+            var checkboxes =  document.getElementsByName("rowSelectCheckBox");
+            for(var i=0, n=checkboxes.length;i<n;i++) {
+                checkboxes[i].checked = false;
+            }
         }
-        
-        th, td {
-            text-align: left;
-            padding: 8px 15px 8px 15px;
-        }
-        
-        tr:nth-child(even){background-color: #E1E1E1}
-        tr:nth-child(odd) {background-color: #F2F2F2}
-        
-        th {
-        background-color: rgb(117, 117, 117);
-        color: white;
-        }
-
-        #selections { 
-           margin-left:auto;
-           margin-right:auto;
-           width: 55%;
-           height: 100px;
-           border-radius: 5px;
-           box-shadow: 5px 5px 5px #AAAAAA, -5px -5px 5px #FFFFFF
-        }
-
-
-        
-    </style>
+    }</script>
 
 </head>
 <body>
@@ -53,7 +34,7 @@
     </ul>
 
     
-    <div style="margin-left:15%;margin-right:5%;padding:1px 16px;height:1000px;">
+    <div class="page_body">
         <!-- Body structure goes here -->
         <h2>View Personnel</h2>
 
@@ -64,6 +45,7 @@
             //pulls columns from table for sort selection
             $result1 = get_columns($link);
             $result2 = get_columns($link);
+            $first_load = true;
         ?>
 
         <!-- contains sort and filter options -->
@@ -99,54 +81,54 @@
                 
                 <!-- check boxes for data shown in table -->
                 <div style="width: 33%;float: left;height: 100%;padding-top:10px;">
-                    <input type="checkbox" name="checklist[]" value="user_ID" checked><label>Show ID</label><br>
-                    <input type="checkbox" name="checklist[]" value="First_Name" checked><label>Show First Name</label><br>
-                    <input type="checkbox" name="checklist[]" value="Last_Name" checked><label>Show Last Name</label><br>
+                    <input type="checkbox" name="checklist[]" value="user_ID"      checked><label>Show ID</label><br>
+                    <input type="checkbox" name="checklist[]" value="First_Name"   checked><label>Show First Name</label><br>
+                    <input type="checkbox" name="checklist[]" value="Last_Name"    checked><label>Show Last Name</label><br>
                     <input type="checkbox" name="checklist[]" value="Organization" checked><label>Show Organization</label><br>
                 </div>
 
                 <!-- check boxes for data shown in table -->
                 <div style="width: 28%;float: left;height: 100%;padding-top:10px;">   
-                    <input type="checkbox" name="checklist[]" value="Pay_Grade" checked><label>Show Pay Grade</label><br>
-                    <input type="checkbox" name="checklist[]" value="Email" checked><label>Show Email Address</label><br>
+                    <input type="checkbox" name="checklist[]" value="Pay_Grade"       checked><label>Show Pay Grade</label><br>
+                    <input type="checkbox" name="checklist[]" value="Email"           checked><label>Show Email Address</label><br>
                     <input type="checkbox" name="checklist[]" value="Activation_Date" checked><label>Show Start Date</label><br>
-                    <input type="checkbox" name="checklist[]" value="permissions" checked><label>Show Permissions</label><br>
+                    <input type="checkbox" name="checklist[]" value="permissions"     checked><label>Show Permissions</label><br>
                 </div>
             </form>
         </div>  
 
 
 
-        <?php
+        <?php //functional code to implement checkboxes, sorting, and filtering
             //pre-defined arrays to populate $table_select based on the checkboxes
             $select_list = array("user_ID", "First_Name", "Last_Name", "Organization", "Pay_Grade", "Email", "Activation_Date", "permissions");
-            $table_select = array(false, false, false, false, false, false, false, false);
+            if ($first_load) $table_select = array(true, true, true, true, true, true, true, true);
 
             //checks that the dropdown box has a value
-            if(array_key_exists('test',$_POST)) { 
+            if($first_load || array_key_exists('test',$_POST)) { 
+                $first_load = false;
                 $filter_err = false;
                 //checks that value can be pulled from select and stores into $sort_value
                 if(isset($_POST['sort_by'])) {
                     $sort_value = $_POST['sort_by'];
                     if(!empty($_POST['checklist'])){
                         $sel_ind  = 0; 
+                        $index = 0;
                         $selected = $_POST['checklist'];
-
-                        //loops though array of selected checkboxes and converts to a boolean array
-                        foreach ($selected as $sel_val) {
-                            for ($i = 0; $i < 8; $i++) {
-                                if (strcmp($sel_val, $select_list[$i]) === 0) {
-                                    $table_select[$i] = true;
-                                    continue;
-                                } 
+                        //loops though array of selected checkboxes and converts to a boolean array (optimized)
+                        foreach ($select_list as $val) {
+                            if ($val == $selected[$sel_ind]) {
+                                $table_select[$index] = true;
+                                $sel_ind++;
+                            } else {
+                                $table_select[$index] = false;
                             }
-                        }
-                        
+                            $index++;
+                        }   
                     }
                 } else {
                     //if fails to retrieve value, sets default to last name
-                    echo '<p align="center">Sorted by: Last Name</p></br>';
-                    $sort_value = 'Last_Name';
+                    $sort_value = 'user_ID';
                 }
 
                 $filter_value = 'none';
@@ -176,11 +158,71 @@
                 if ($has_filter) echo '<p align="center">Filtered by: ' .$filter_value. " - " .$filter_key. "</p>";
 
                 //sends sort selection and checkbox values to print function to create table
-                if (!$filter_err) print_people($link, $sort_value, $table_select, $filter_value, $filter_key);
-            } 
+                if (!$filter_err) {
+                    //adjust filter category to be valid entry for SQL query because of table JOIN
+                if ($filter_value == 'Organization') $filter_value = 'groups.group_name';
+
+
+                //build query statement to print table
+                $sql = "SELECT * FROM People INNER JOIN Groups on People.Organization = Groups.ID";
+
+                //if filter is specified, add to query
+                if ($filter_value != 'none') {
+                    $sql = $sql . " WHERE " . $filter_value . " LIKE '%" . $filter_key . "%'";
+                }
+
+                //append ordering value
+                $sql = $sql . " ORDER BY " . $sort_value;
+
+                //code to print table
+                if ($res = mysqli_query($link, $sql)) { 
+                    //print column headers with select/dis-select all box
+                    if (mysqli_num_rows($res) > 0) { 
+                        echo '<table id="person_table" style="border-radius: 5px;box-shadow: 5px 5px 5px #AAAAAA, -5px -5px 5px #FFFFFF">'; 
+                        echo "<tr>"; 
+                        echo '<th><input type="checkbox" id="checkUncheckAll" onClick="CheckUncheckAll()" /></th>;';
+                        if ($table_select[0] == 1) { echo "<th>ID</th>"; }
+                        if ($table_select[1]) { echo "<th>First Name</th>"; }
+                        if ($table_select[2]) { echo "<th>Last Name</th>";  }
+                        if ($table_select[3]) { echo "<th>Organization</th>"; }
+                        if ($table_select[4]) { echo "<th>Paygrade</th>"; }
+                        if ($table_select[5]) { echo "<th>Email</th>"; }
+                        if ($table_select[6]) { echo "<th>Start Date</th>"; }
+                        if ($table_select[7]) { echo "<th>Permissions</th>"; }
+                        echo "<th></th>";
+                        echo "</tr>"; 
+                        //for each row, print corresponding data to webpage
+                        while ($row = mysqli_fetch_array($res)) { 
+                            $UID = $row['user_ID'];
+                            echo "<tr>"; 
+                            echo "<td><input type='checkbox' name='rowSelectCheckBox' value='".$row['user_ID']."'/></td>";
+                            if ($table_select[0]) { echo "<td>".$row['user_ID']."</td>"; }
+                            if ($table_select[1]) { echo "<td>".$row['First_Name']."</td>"; } 
+                            if ($table_select[2]) { echo "<td>".$row['Last_Name']."</td>"; }
+                            if ($table_select[3]) { echo "<td>".$row['group_name']."</td>"; }
+                            if ($table_select[4]) { echo "<td>".$row['Pay_Grade']."</td>"; }
+                            if ($table_select[5]) { echo "<td>".$row['Email']."</td>"; }
+                            if ($table_select[6]) { echo "<td>".$row['Activation_Date']."</td>"; }
+                            if ($table_select[7]) { echo "<td>".$row['permissions']."</td>"; }	
+                            echo "<td><a href='user_data.php?user_ID=" .$UID. "' target='_blank'>View Info</a></td>";
+                            echo "</tr>"; 
+                        } 
+                        echo "</table>"; 
+                        mysqli_free_result($res); 
+                    } 
+                    //if sql query returns no results, print message
+                    else { 
+                        echo "No matching records are found."; 
+                    } 
+                } 
+                //if query function fails, give error.
+                else { 
+                    echo "ERROR: Could not able to execute $sql. "
+                                                .mysqli_error($link); 
+                } 
+            }
+        } 
         ?>
-
     </div>
-
 </body>
 </html>
