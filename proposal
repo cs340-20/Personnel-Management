@@ -1,12 +1,16 @@
-Introduction
+# **AdminMax**
+### Team Name: AdminMax 
+### Team Members: Cainan Howard, Alex Whitaker, Sammy Awad, Timothy Krenz
+
+##Introduction
 AdminMax is a personnel management service. We have been a part of organizations and teams in the past that waste time on administrative tasks due to the use of fragmented and clunky services. Our project is intended to fill that void in the market and serve as a single, comprehensive personnel management service. 
 
-Customer Value
+##Customer Value
 Our service is intended to be used by any organization, team, or group of people. Any organization regardless of size requires a certain level of administration. Members of the organization need to be categorized, attendance needs to be tracked, and communication needs to be facilitated. There is other software on the market that can serve these purposes; however, no one service hosts solutions to all of these problems, and most of them are clunky and complicated. Currently, organizations are forced to use many different platforms to meet their administrative needs thus wasting time and creating the need to more overhead.
 
 Our software will serve as a single, comprehensive platform that hosts solutions to fulfill all of these needs and streamline administration. Our project will be successful if customers are able to condense their administrative toolset and reduce the amount of man hours spent on administrative tasks. 
 
-Proposed Solution & Technology
+##Proposed Solution & Technology
 We want to have an SQL database framework that will allow our users to easily find data on their employees, and allow the employees to view their own information. This framework would simply be a single web page in which the user can search and sort the database based on different keys using SQL queries and php code execution.
 
 We also intend to have another portion of the SQL database for event tracking which will maintain different events and people that attended them. This would be a set of procedurally generated web pages that would pull a user’s attendance record or a record from an event from the database and print it out in a specific format.
@@ -17,8 +21,8 @@ In order for this to have value to the user, the minimum functionality would nee
 
 We could use the Air Force ROTC Wing here at the University to test our system. Both Alex Whitaker and Cainan Howard are senior members of the Detachment and could use the members of the Wing as a test case for our software.
 
-Team
+##Team
 This project requires knowledge of both SQL databases, HTML and PHP. All team members have at least a basic understanding of these tools though, a deeper understanding will likely need to be achieved in order to complete many of the project’s features. The project will have several pages for users to interact with. Since each member is familiar with all of the tools being used, each member will oversee the production of their assigned page. These rolls, however, are not set in stone and will likely become more fluid as issues arise in separate sections of the application.
 
-Project Management
+##Project Management
 The completion of the system is feasible if we break down this project into small parts. We must approach the solution of this project from minute to large scale. Starting small and adding on to it as we go will make the completion of this system feasible. I don't see why there would be any legal constraints to this project. If an actual company were to use this that could open the door to legal contains. However, for the purpose of our study there would be no regulations upon us. This project does link to any social or ethical issues. 
