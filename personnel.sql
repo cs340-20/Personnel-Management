@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 22, 2020 at 04:57 PM
+-- Generation Time: Feb 05, 2020 at 03:29 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -49,7 +49,7 @@ INSERT INTO `groups` (`ID`, `group_name`) VALUES
 --
 
 CREATE TABLE `people` (
-  `ID` int(11) NOT NULL,
+  `user_ID` int(11) NOT NULL,
   `First_Name` varchar(30) NOT NULL,
   `Last_Name` varchar(30) NOT NULL,
   `Email` varchar(50) NOT NULL,
@@ -68,7 +68,8 @@ CREATE TABLE `people` (
 -- Dumping data for table `people`
 --
 
-INSERT INTO `people` (`ID`, `First_Name`, `Last_Name`, `Email`, `Activation_Date`, `Pay_Grade`, `Organization`, `Extra_1`, `Extra_2`, `Extra_3`, `Extra_4`, `Extra_5`, `permissions`) VALUES
+INSERT INTO `people` (`user_ID`, `First_Name`, `Last_Name`, `Email`, `Activation_Date`, `Pay_Grade`, `Organization`, `Extra_1`, `Extra_2`, `Extra_3`, `Extra_4`, `Extra_5`, `permissions`) VALUES
+(0, '', '', '', '0000-00-00', 0, 0, 0, 0, 0, 0, 0, ''),
 (1, 'John', 'Doe', 'John_Doe@comcast.net', '2020-01-01', 1, 1, 0, 0, 0, 0, 0, 'user'),
 (2, 'Joe', 'Average', 'average.joe@email.com', '2019-09-17', 2, 1, 0, 0, 0, 0, 0, 'user'),
 (3, 'Jerry', 'Jones', 'JJones@me.com', '2018-05-21', 6, 1, 0, 0, 0, 0, 0, 'user'),
@@ -78,7 +79,8 @@ INSERT INTO `people` (`ID`, `First_Name`, `Last_Name`, `Email`, `Activation_Date
 (7, 'Alex', 'Whitaker', 'cwhita11@vols.utk.edu', '2018-01-01', 4, 3, 0, 0, 0, 0, 0, 'admin'),
 (8, 'Cainan', 'Howard', 'chowar32@vols.utk.edu', '2018-01-01', 4, 3, 0, 0, 0, 0, 0, 'admin'),
 (9, 'Sammy', 'Awad', 'sawad1@vols.utk.edu', '2018-01-01', 4, 3, 0, 0, 0, 0, 0, 'admin'),
-(10, 'Timothy', 'Krenz', 'fhm352@vols.utk.edu', '2018-01-01', 4, 3, 0, 0, 0, 0, 0, 'admin');
+(10, 'Timothy', 'Krenz', 'fhm352@vols.utk.edu', '2018-01-01', 4, 3, 0, 0, 0, 0, 0, 'admin'),
+(11, 'Rae', 'Bernaola', 'rbernaol@vols.utk.edu', '2020-02-04', 3, 1, 0, 0, 0, 0, 0, 'user');
 
 --
 -- Indexes for dumped tables
@@ -94,7 +96,7 @@ ALTER TABLE `groups`
 -- Indexes for table `people`
 --
 ALTER TABLE `people`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`user_ID`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -105,12 +107,6 @@ ALTER TABLE `people`
 --
 ALTER TABLE `groups`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `people`
---
-ALTER TABLE `people`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
