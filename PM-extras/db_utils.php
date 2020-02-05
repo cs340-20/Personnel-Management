@@ -13,6 +13,35 @@ function create_connection () {
 	}	
 }
 
+function add_user($link, $new_user) {
+	$date = date("Y-m-d");
+	
+	if ($result = mysqli_query($link, "SELECT people.user_ID FROM people")) {
+		$last = -1;
+		while ($row = mysqli_fetch_array($result)) {
+			if ($row[0] != ($last + 1)) {
+				$num = $last + 1;
+				break;
+			} else {
+				$last = $row[0];
+			}
+		}
+		$num = $last + 1;
+	}
+
+	if ($result = mysqli_query($link, "SELECT groups.ID FROM groups WHERE groups.group_name='".$new_user[4]."'")) {
+		$row = mysqli_fetch_array($result);
+		$org_id = $row[0];
+	}
+
+	if (!mysqli_query($link, 'INSERT INTO personnel.people (user_ID, First_Name, Last_name, Email, Activation_Date, Pay_Grade, Organization, permissions) 
+								VALUES ('.$num.', "'.$new_user[0].'", "'.$new_user[1].'", "'.$new_user[2].'", "'.$date.'", "'.$new_user[3].'", "'.$org_id.'", "'.$new_user[5].'")')) {
+		echo "insert failed";
+	}
+
+}
+
+
 function get_user_name($link, $user_ID) {
 	$full_name = "";
 
@@ -27,15 +56,24 @@ function get_user_name($link, $user_ID) {
 		//echo $full_name;
 
 	} else {
-		echo "ERROR: Could not able to execute $sql. "
+		echo "ERROR: Could not execute $sql."
 									.mysqli_error($link); 
 	}
-	mysqli_close($link); 
 
 	return $full_name;
 }
 
+function get_groupnames($link) {
+	if ($result = mysqli_query($link, "SELECT group_name FROM groups")) {
+		while ($row = mysqli_fetch_array($result)) {
+			$names[] = $row[0];
+		}
 
+	} else {
+		echo "ERROR: Could not get group names.";
+	}
+	return $names;
+}
 
 function get_columns($link) {
 	$result = $link->query("SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` 
