@@ -15,7 +15,7 @@
         <li><a href="messaging.php">Messaging</a></li>
     </ul>
 
-    <div style="margin-left:10%;padding:1px 16px;height:1000px;">
+    <div class="page_body">
         <!-- Body structure goes here -->
         <h2>This is the page body!</h2>
         <p>The meat and potatoes goes here!</p>

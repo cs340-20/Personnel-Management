@@ -13,62 +13,66 @@ function create_connection () {
 	}	
 }
 
-
-function print_people($link, $sort_value, $table_select, $filter_value, $filter_key) { 
-	if ($filter_value == 'Organization') $filter_value = 'groups.group_name';
-
-
-	//build query statement to print table
-	$sql = "SELECT * FROM People INNER JOIN Groups on People.Organization = Groups.ID";
-
-	if ($filter_value != 'none') {
-		$sql = $sql . " WHERE " . $filter_value . " LIKE '%" . $filter_key . "%'";
+function add_user($link, $new_user) {
+	$date = date("Y-m-d");
+	
+	if ($result = mysqli_query($link, "SELECT people.user_ID FROM people")) {
+		$last = -1;
+		while ($row = mysqli_fetch_array($result)) {
+			if ($row[0] != ($last + 1)) {
+				$num = $last + 1;
+				break;
+			} else {
+				$last = $row[0];
+			}
+		}
+		$num = $last + 1;
 	}
 
-	$sql = $sql . " ORDER BY " . $sort_value;
+	if ($result = mysqli_query($link, "SELECT groups.ID FROM groups WHERE groups.group_name='".$new_user[4]."'")) {
+		$row = mysqli_fetch_array($result);
+		$org_id = $row[0];
+	}
+
+	if (!mysqli_query($link, 'INSERT INTO personnel.people (user_ID, First_Name, Last_name, Email, Activation_Date, Pay_Grade, Organization, permissions) 
+								VALUES ('.$num.', "'.$new_user[0].'", "'.$new_user[1].'", "'.$new_user[2].'", "'.$date.'", "'.$new_user[3].'", "'.$org_id.'", "'.$new_user[5].'")')) {
+		echo "insert failed";
+	}
+
+}
 
 
-	if ($res = mysqli_query($link, $sql)) { 
-		if (mysqli_num_rows($res) > 0) { 
-			echo '<table id="person_table" style="border-radius: 5px;box-shadow: 5px 5px 5px #AAAAAA, -5px -5px 5px #FFFFFF">'; 
-			echo "<tr>"; 
-			echo "<th>Select</th>";
-			if ($table_select[0] == 1) { echo "<th>ID</th>"; }
-			if ($table_select[1]) { echo "<th>First Name</th>"; }
-			if ($table_select[2]) { echo "<th>Last Name</th>";  }
-			if ($table_select[3]) { echo "<th>Organization</th>"; }
-			if ($table_select[4]) { echo "<th>Paygrade</th>"; }
-			if ($table_select[5]) { echo "<th>Email</th>"; }
-			if ($table_select[6]) { echo "<th>Start Date</th>"; }
-			if ($table_select[7]) { echo "<th>Permissions</th>"; }
-			echo "<th></th>";
-			echo "</tr>"; 
-			while ($row = mysqli_fetch_array($res)) { 
-				echo "<tr>"; 
-				echo "<td><input type='checkbox' name='user_".$row['user_ID']."'/></td>";
-				if ($table_select[0]) { echo "<td>".$row['user_ID']."</td>"; }
-				if ($table_select[1]) { echo "<td>".$row['First_Name']."</td>"; } 
-				if ($table_select[2]) { echo "<td>".$row['Last_Name']."</td>"; }
-				if ($table_select[3]) { echo "<td>".$row['group_name']."</td>"; }
-				if ($table_select[4]) { echo "<td>".$row['Pay_Grade']."</td>"; }
-				if ($table_select[5]) { echo "<td>".$row['Email']."</td>"; }
-				if ($table_select[6]) { echo "<td>".$row['Activation_Date']."</td>"; }
-				if ($table_select[7]) { echo "<td>".$row['permissions']."</td>"; }	
-				echo "<td><a href='../index.php' target='_blank'>View Info</a></td>";
-				echo "</tr>"; 
-			} 
-			echo "</table>"; 
-			mysqli_free_result($res); 
-		} 
-		else { 
-			echo "No matching records are found."; 
-		} 
-	} 
-	else { 
-		echo "ERROR: Could not able to execute $sql. "
+function get_user_name($link, $user_ID) {
+	$full_name = "";
+
+	$query = "SELECT Last_Name, First_Name FROM People WHERE People.user_ID = " . $user_ID;
+
+	if ($result = mysqli_query($link, $query)) {
+
+		$row = mysqli_fetch_array($result);
+
+		$full_name = $row['Last_Name'] . ", " . $row['First_Name'];
+
+		//echo $full_name;
+
+	} else {
+		echo "ERROR: Could not execute $sql."
 									.mysqli_error($link); 
-	} 
-	mysqli_close($link); 
+	}
+
+	return $full_name;
+}
+
+function get_groupnames($link) {
+	if ($result = mysqli_query($link, "SELECT group_name FROM groups")) {
+		while ($row = mysqli_fetch_array($result)) {
+			$names[] = $row[0];
+		}
+
+	} else {
+		echo "ERROR: Could not get group names.";
+	}
+	return $names;
 }
 
 function get_columns($link) {
