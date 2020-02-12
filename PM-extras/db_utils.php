@@ -41,6 +41,15 @@ function add_user($link, $new_user) {
 
 }
 
+function remove_user($link, $remove_ID) {
+	$remove_query = "DELETE FROM people WHERE people.user_ID = ". $remove_ID;
+
+	if (mysqli_query($link, $remove_query)) {
+	} else {
+		echo "Failed to remove user " .$remove_ID;
+	}
+}
+
 
 function get_user_name($link, $user_ID) {
 	$full_name = "";
@@ -56,7 +65,7 @@ function get_user_name($link, $user_ID) {
 		//echo $full_name;
 
 	} else {
-		echo "ERROR: Could not execute $sql."
+		echo "ERROR: Could not execute sql query."
 									.mysqli_error($link); 
 	}
 
@@ -81,6 +90,45 @@ function get_columns($link) {
 									AND COLUMN_NAME NOT LIKE 'Extra%'");
 									
 	return $result;
+}
+
+function get_user_info($link, $UID) {
+	$res = mysqli_query($link, "SELECT * FROM people JOIN groups ON people.Organization = groups.ID WHERE user_ID = ". $UID);
+	$row = mysqli_fetch_array($res);
+
+	$row["supervisor_name"] = get_user_name($link, $row["supervisor_ID"]);
+
+	$get_gps = mysqli_query($link, "SELECT ID, group_name FROM groups");
+	while ($gp_row = mysqli_fetch_array($get_gps)) {
+		$gp_names[$gp_row["ID"]] = $gp_row["group_name"];
+	}
+
+	$extras = "";
+
+	if ($row['Extra_1'] != 0) {
+		$extras	= $extras . $gp_names[$row["Extra_1"]];
+	}
+	if ($row['Extra_2'] != 0) {
+		if ($extras != "") $extras = $extras . ", ";
+		$extras	= $extras . $gp_names[$row["Extra_2"]];
+	}
+	if ($row['Extra_3'] != 0) {
+		if ($extras != "") $extras = $extras . ", ";
+		$extras	= $extras . $gp_names[$row["Extra_3"]];
+	}
+	if ($row['Extra_4'] != 0) {
+		if ($extras != "") $extras = $extras . ", ";
+		$extras	= $extras . $gp_names[$row["Extra_4"]];
+	}
+	if ($row['Extra_5'] != 0) {
+		if ($extras != "") $extras = $extras . ", ";
+		$extras	= $extras . $gp_names[$row["Extra_5"]];
+	}
+
+	if ($extras == "") $row["extras"] = "None";
+		else $row["extras"] = $extras;
+
+	return $row;
 }
 
 ?> 
