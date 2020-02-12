@@ -4,44 +4,6 @@
     <link rel="stylesheet" type="text/css" href="../PM-css/styles.css">
     <title>User Data</title> 
 
-    <style>
-        .top_line {
-            width: 100%;
-            height: 50px;
-        }
-
-        .top_line_L {
-            width: 50%;
-            height: 100%;
-            float: left;
-        }
-        
-        .top_line_R {
-            margin-top: 25px;
-            width: 50%;
-            height: 100%;
-            float: left;
-            bottom: 0;
-        }
-
-        .column {
-            float: right;
-            width: 150px;
-            height: 30px;
-            padding: 8px 5px 0px 5px;
-            border-radius: 10px;
-            text-align: center;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            color: #FF7676;
-            background-color: #EEE;
-            border-radius: 5px;
-            box-shadow: 5px 5px 5px #AAAAAA, -5px -5px 5px #FFFFFF;
-        }
-
-    </style>
-
 </head>
 <body>
 
@@ -60,17 +22,51 @@
 
     <div class="page_body">
         <!-- Body structure goes here -->
-        <div class="top_line">
-            <div class="top_line_L">
-                <h1><?php echo get_user_name($link, $UID); ?></h1>
-            </div>
-            <div class="top_line_R">
-                <div class="column" onclick="openTab('b3');">
-                    Remove Person
+        <div class="user_data_container">
+            <div class="top_line">
+                <div class="top_line_L">
+                    <h1><?php echo get_user_name($link, $UID); ?></h1>
+                </div>
+                <div class="top_line_R">
+                    <h2>User ID = <?php echo $UID; ?></h2>
                 </div>
             </div>
+
+            <div>
+                <div class="user_info_box">
+                    <div class="user_column">
+                        <?php $row = get_user_info($link, $UID); ?>
+                            
+                        <table id="user_info_table">
+                            <tr>
+                                <th>Organization</th>
+                                <th>Paygrade</th>
+                                <th>Email</th>
+                                <th>Permissions</th>
+                            </tr>
+                            <tr>
+                                <?php
+                                    echo "<td class='user_cell'>".$row['group_name']."</td>";
+                                    echo "<td class='user_cell'>".$row['Pay_Grade']."</td>";
+                                    echo "<td class='user_cell'>".$row['Email']."</td>";
+                                    echo "<td class='user_cell'>".$row['permissions']."</td>";
+                                ?>
+                            </tr>
+                        </table>
+
+                    </div>                 
+                </div>
+
+            </div>
+
+            <div class="remove_button" onclick="openTab('b3');">
+                Remove Person
+            </div>
         </div>
+
     </div>
+
+    
 
     
 
