@@ -1,7 +1,6 @@
 <?php  
 
 
-
 function create_connection () {
 	$link = mysqli_connect("localhost", "root", "", "Personnel"); 
   
@@ -49,7 +48,6 @@ function remove_user($link, $remove_ID) {
 		echo "Failed to remove user " .$remove_ID;
 	}
 }
-
 
 function get_user_name($link, $user_ID) {
 	$full_name = "";
@@ -130,5 +128,23 @@ function get_user_info($link, $UID) {
 
 	return $row;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ?> 
