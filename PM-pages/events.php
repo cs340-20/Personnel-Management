@@ -15,7 +15,7 @@
     <!-- Nav-bar links -->
     <ul>
         <li><a href="../index.php">Home</a></li>
-        <li><a href="personnel.php">personnel</a></li>
+        <li><a href="personnel.php">Personnel</a></li>
         <li><a class="active" href="events.php">Events</a class="active"></li>
         <li><a href="messaging.php">Messaging</a></li>
     </ul>
