@@ -107,6 +107,7 @@
     height: 100%;
     overflow: auto;
     box-shadow: 1px 0px 10px;
+    z-index: 10;
   }
 
   li a {

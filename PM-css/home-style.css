@@ -1,0 +1,219 @@
+@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Lato', sans-serif;
+}
+
+html {
+  overflow: hidden;
+}
+
+.page_container {
+  height: 100vh;
+  width: 100vw;
+  
+  background-color: #555;
+}
+
+/* Nav Bar Styles */
+  .nav_bar {
+    width: 100%;
+    height: 50px;
+    padding: 5px;
+    background-color: white;
+  }
+
+  .nav_stack {
+    width: 100%;
+    position: absolute;
+  }
+
+  .nav_logo {
+    margin: 10px;
+    float: left;
+  }
+
+  .nav_links {
+    width: 40%;
+    min-width: 400px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0;
+    display: flex;
+  }
+
+  .n_link {
+    height: 50px;
+    width: 25%;
+    margin: 0;
+    padding: 0;
+    
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav_button {
+    width: 90px;
+    height: 30px;
+    margin: 10px 0px;
+    color: #555;
+    border: solid;
+    border-color: #555;
+    cursor: pointer;
+    border-radius: 15px;
+    background-color: white;
+    transition: background-color .1s, color .1s;
+  }
+
+  .nav_button:hover {
+    background-color: #555;
+    color: white
+  }
+
+/* Footer Styles */
+  .footer {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    padding: 10px;
+    text-align: center;
+    background-color: #555;
+    color: #222;
+  }
+
+  .footer_link:visited {
+    color: #222;
+  }
+
+  .footer_note {
+    padding-top: 3px;
+  }
+
+/* Home page styles */
+  .home_body {
+    width: 100%;
+    height: 700px;
+    text-align: center;
+    background-color: deepskyblue;
+  }
+
+  .page_title {
+    color: white;
+    padding: 20px 0 10px 0;
+    font-size: 32pt;
+    font-weight: bold;
+  }
+
+  .page_caption {
+    color: white;
+    font-size: 16pt;
+    padding-bottom: 10px;
+  }
+
+/* card styling */
+  .body_clip {
+    background-color: white;
+  }
+
+  .icon_style {
+    margin: 20px;
+    height: 80px;
+    width: 80px;
+  }
+
+  .card_body {
+    box-sizing: border-box;
+    width: 100%;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .column_clip {
+    height: 400px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .card_column {
+    width: 22%;
+    min-width: 295px;
+    padding-top: 60px;
+    float: left;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 500px;
+  }
+
+  .card {
+    vertical-align: middle;
+    width: 300px;
+    height: 340px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: hsl(0, 0%, 100%);
+    line-height: 2;
+    border-radius: 10px;
+    margin: 0.5rem;
+    transition: transform 0.2s ease-out;
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.66);
+  }
+
+  .card figure {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: white;
+    margin-top: -60px;
+    position: relative; 
+  }
+  .card figure:before {
+    content: "";
+    border-radius: inherit;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%, -50%);
+    border: 1rem solid hsl(250, 85%, 97%);
+    box-shadow: 0 -1px 5px hsla(0, 0%, 0%, 0.5);
+  }
+
+  .card div {
+    text-align: center;
+    margin: 2rem;
+  }
+  .card div p {
+    color: hsl(250, 5%, 45%);
+    font-weight: 400;
+    font-style: italic;
+    margin: 1rem 0 5rem;
+    position: relative;
+    z-index: 5;
+  }
+  .card div h1 {
+    font-size: 1.5rem;
+    color: #555;
+    border: solid;
+    border-color: #555;
+    border-radius: 1.5rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+    transition: background-color .1s, color .1s;
+  }
+
+  .card div h1:hover {
+    background-color: #555;
+    color: white;
+  }
