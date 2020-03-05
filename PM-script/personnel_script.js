@@ -18,7 +18,7 @@ function CheckUncheckAll() {
 function GetEmails() {
         email_list = "";
 
-        boxes = document.getElementsByName('rowSelectCheckBox');
+        boxes = document.querySelectorAll('input.email_check');
         var i;
         var num = 0;
         for (i = 0; i < boxes.length; i++) {
@@ -38,7 +38,7 @@ function openAddUser() {
     var addBox = document.getElementById('add_user_box');
 
     if (addBox.classList.contains('add_user_closed')) {
-        addBox.style.height = '190px';
+        addBox.style.height = '170px';
         addBox.classList.remove('add_user_closed');
         addBox.classList.add('add_user_opened');
     } else if (addBox.classList.contains('add_user_opened')) {

@@ -1,102 +1,45 @@
-/* All pages: formatting for body elements, font */
-  * {
-    font-family: Arial;
-  }
+@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
 
-  body {
-    margin: 0;
-    background-color: #EEEEEE;
-  }
+* {
+  font-family: 'Lato', sans-serif;
+  
+}
 
-  .page_body {
-    margin-left: 200px;
-    margin-right: 80px;
-    padding: 1px 16px;
-  }
+html {
+  height: 100%;
+  width: 100%;
+}
 
-/* styling for user data page */
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
 
-  .user_data_container {
-    width: 90%;
-    margin: 0 auto;
-  }
+.page_body {
+  margin-left: 200px;
+  margin-right: 80px;
+  padding: 1px 16px;
+}
 
-  .top_line {
-    margin-top: 20px;
-    margin-left: auto;
-    margin-right: auto;
-    height: 80px;
-    padding-left: 20px;
-    padding-right: 20px;
-    background-color: #EEE;
-    border-radius: 15px;
-    box-shadow: 5px 5px 5px #AAAAAA, -5px -5px 5px #FFFFFF;
-  }
+.page_container {
+  width: 100vw;
+  min-height: calc(100% - 65px);
+  overflow-x: hidden;
+  position: relative;
+  padding-bottom: 65px;
+  background-color: white;
+}
 
-  .top_line_L {
-    width: 50%;
-    height: 100%;
-    float: left;
-  }
+.home_body {
+  width: 100%;
+  min-height: 100%;
+  text-align: center;
+  background-color: deepskyblue;
+}
 
-  .top_line_R {
-    width: 50%;
-    height: 100%;
-    float: left;
-    text-align: right;
-    margin-top: 5px;
-  }
-
-  .user_info_box {
-    margin: 30px auto;
-    height: 500px;
-    background-color: #555;
-    border-radius: 30px;
-    box-shadow: inset 0 0 15px #000000;
-  }
-
-  .user_column {
-    margin: 0 auto;
-    width: 80%;
-    height: 90%;
-    color: white;
-    background-color: blue;
-  }
-
-  #user_info_table {
-    width: 90%;
-    margin: 10px auto;
-    text-align: center;
-    background-color: #555;
-  }
-
-  .user_cell {
-    text-align: center;
-    white-space: nowrap;
-    padding: 8px 15px 8px 15px;
-  }
-
-  .remove_button {
-    float: right;
-    width: 150px;
-    height: 30px;
-    padding: 8px 5px 0px 5px;
-    border-radius: 10px;
-    text-align: center;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    color: #EEE;
-    background-color: #FF7676;
-    box-shadow: 5px 5px 5px #AAAAAA, -5px -5px 5px #FFFFFF;
-  }
-
-  .remove_button:hover {
-    background-color: #FF3c3c;
-  }
-
-/* styling for navigation bar */
-
+/* styling for old navigation bar */
   ul {
     list-style-type: none;
     margin: 0;
@@ -125,4 +68,153 @@
   li a:hover:not(.active) {
     background-color: #555;
     color: white;
+  }
+
+/* Nav Bar Styles */
+  .nav_bar {
+    width: 100%;
+    height: 50px;
+    padding: 5px;
+    margin: 0 auto;
+    background-color: deepskyblue;
+  }
+
+  .nav_stack {
+    width: 100%;
+    position: absolute;
+  }
+
+  .nav_logo {
+    margin: 10px;
+    float: left;  
+  }
+
+  .nav_logo h2 {
+    color: white;
+  }
+
+  .nav_links {
+    width: 40%;
+    min-width: 400px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0;
+    display: flex;
+  }
+
+  .n_link {
+    height: 50px;
+    width: 25%;
+    margin: 0;
+    padding: 0;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav_button {
+    width: 100px;
+    height: 30px;
+    margin: 10px 10px;
+    background-color: white;
+    cursor: pointer;    
+    border: solid;
+    border-radius: 15px;
+    transition: background-color 0.1s, color 0.1s;
+  }
+
+  .nav_button:hover {
+    border: solid;
+    border-color: black;
+    background-color: deepskyblue;
+    color: white;
+
+  }
+
+  .nav_button_home {
+    color: #555;
+    border-color: #555;
+    background-color: white;
+    transition: background-color 0.1s, color 0.1s;
+  }
+
+  .nav_button_home:hover {
+    background-color: #555;
+    color: white;
+  }
+
+  .nav_button_others {
+    color: white;
+    border-color: white;
+    background-color: deepskyblue;
+    transition: background-color 0.1s, color 0.1s;
+  }
+
+  .nav_button_others:hover {
+    background-color: white;
+    color: deepskyblue;
+  }
+
+/* table formatting */
+  .table_wrapper {
+    margin: 0 auto;
+  }
+
+  .person_table {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding-bottom: 20px;
+    box-shadow: 5px 5px 5px #AAAAAA;
+    margin: 30px auto;
+  }
+
+
+  th.person_header {
+    background-color: deepskyblue;
+    color: white;
+    text-align: center;
+    padding: 8px 15px 8px 15px;
+    white-space: nowrap;
+  }
+
+  td.person_data {
+    text-align: center;
+    white-space: nowrap;
+    padding: 8px 5px;
+  }
+
+  tr.person_row:nth-child(even) {
+    background-color: rgb(231, 249, 255);
+    transition: background-color 0.5s;
+  }
+
+  tr.person_row:nth-child(odd) {
+    background-color: white;
+    transition: background-color 0.5s;
+  }
+
+  tr.person_row:hover {
+    background-color: rgb(117, 221, 255);
+  }
+
+/* Footer Styles */
+  .footer {
+    width: 100vw;
+    height: 45px;
+    padding: 10px 0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+    background-color: #555;
+    color: #222;
+  }
+
+  .footer_link:visited {
+    color: #222;
+  }
+
+  .footer_note {
+    padding-top: 3px;
   }

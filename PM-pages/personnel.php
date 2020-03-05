@@ -3,111 +3,117 @@
 
 <head>
     <link rel="stylesheet" type="text/css" href="../PM-css/styles.css">
+    <link rel="stylesheet" type="text/css" href="../PM-css/home-style.css">
     <link rel="stylesheet" type="text/css" href="../PM-css/personnel-style.css">
-    <title>Personnel</title>
-
-    <meta charset="UTF-8">
 
     <!-- javascript functions for page -->
     <script type="text/javascript" src="../PM-script/personnel_script.js"></script>
 
-    <!-- Javascript to include a SQL Builder to sanitize input -->
-    <script type="text/javascript" src="../PM-script/squel.min.js"></script>
+
+    <title>Personnel Management</title>
 
 </head>
 
 <body>
+    <!-- ensures that db_utils is loaded -->
+    <?php require '../PM-extras/db_utils.php';
+    $link = create_connection();
 
-    <!-- Nav-bar links -->
-    <ul>
-        <li><a href="../index.php">Home</a></li>
-        <li><a class="active" href="personnel.php">Personnel</a></li>
-        <li><a href="events.php">Events</a></li>
-        <li><a href="messaging.php">Messaging</a></li>
-    </ul>
+    //pulls columns from table for sort selection
+    $result1 = get_columns($link);
+    $result2 = get_columns($link);
+    $first_load = true;
 
+    //allows checkboxes to maintain value
+    if (isset($_POST['checklist'])) {
+        foreach ($_POST['checklist'] as $selectedbox)
+            $selected[$selectedbox] = "checked";
+    }
 
-    <div class="page_body">
-        <div class="personnel_wrapper">
-            <!-- Body structure goes here -->
-            <h2>View Personnel</h2>
+    ?>
 
-            <!-- ensures that db_utils is loaded -->
-            <?php require '../PM-extras/db_utils.php';
-            $link = create_connection();
-
-            //pulls columns from table for sort selection
-            $result1 = get_columns($link);
-            $result2 = get_columns($link);
-            $first_load = true;
-
-            //allows checkboxes to maintain value
-            if (isset($_POST['checklist'])) {
-                foreach ($_POST['checklist'] as $selectedbox)
-                    $selected[$selectedbox] = "checked";
-            }
-
-            ?>
-
-            <!-- HTML for view, sort, and filter options -->
-            <div id="select_container">
-                <div id="selections">
-                    <form action="" method="post">
-                        <!-- 3 divs that contain three columns of sort, filter, and view options -->
-                        <div style="width: 33%;float: left;height: 100%;padding-right:20px;padding-top:5px;text-align:right;">
-
-                            <!-- create dropdown boxes with retrieved column names from database -->
-                            Sort by: <select name="sort_by" style="margin-bottom: 2px;">
-                                <?php
-                                //make sort box based on column headers
-                                while ($row = $result1->fetch_assoc()) {
-                                    echo '<option value="' . $row['COLUMN_NAME'] . '" ' . ((isset($_POST["sort_by"]) && $_POST["sort_by"] == $row['COLUMN_NAME']) ? "selected='selected'" : "") . '>' . $row['COLUMN_NAME'] . '</option>';
-                                }
-                                ?>
-                            </select> <br>
-                            Filter by: <select name="filter_by" style="margin-bottom: 2px;">
-                                <?php
-                                //make filter box based on column headers
-                                echo '<option value="none">None</option>';
-                                while ($row = $result2->fetch_assoc()) {
-                                    echo '<option value="' . $row['COLUMN_NAME'] . '" ' . ((isset($_POST["filter_by"]) && $_POST["filter_by"] == $row['COLUMN_NAME']) ? "selected='selected'" : "") . '>' . $row['COLUMN_NAME'] . '</option>';
-                                }
-                                ?>
-                            </select><br>
-                            <!-- Text box for filter key -->
-                            Key: <input type="text" name="filter_key" maxlength="14" style="width: 114px; margin-bottom: 2px;" value="<?php echo isset($_POST['filter_key']) ? $_POST['filter_key'] : '' ?>">
-                            <br>
-
-                            <!-- Go button to print table -->
-                            <input type="submit" name="test" id="test" value="Go" /><br />
-
-                        </div>
-
-                        <!-- check boxes for data shown in table, PHP for holding value -->
-                        <div style="width: 33%;float: left;height: 100%;padding-top:10px;">
-                            <label><input type="checkbox" name="checklist[]" value="user_ID" <?php echo (isset($selected['user_ID'])      ? $selected['user_ID'] : ""); ?>>Show ID</label><br>
-
-                            <label><input type="checkbox" name="checklist[]" value="First_Name" <?php echo (isset($selected['First_Name'])   ? $selected['First_Name'] : ""); ?>>Show First Name</label><br>
-
-                            <label><input type="checkbox" name="checklist[]" value="Last_Name" <?php echo (isset($selected['Last_Name'])    ? $selected['Last_Name'] : ""); ?>>Show Last Name</label><br>
-
-                            <label><input type="checkbox" name="checklist[]" value="Organization" <?php echo (isset($selected['Organization']) ? $selected['Organization'] : ""); ?>>Show Organization</label><br>
-                        </div>
-
-                        <!-- check boxes for data shown in table, PHP for holding value -->
-                        <div style="width: 28%;float: left;height: 100%;padding-top:10px;">
-                            <label><input type="checkbox" name="checklist[]" value="Pay_Grade" <?php echo (isset($selected['Pay_Grade']) ? $selected['Pay_Grade'] : ""); ?>>Show Pay Grade</label><br>
-
-                            <label><input type="checkbox" name="checklist[]" value="Email" <?php echo (isset($selected['Email']) ? $selected['Email'] : ""); ?>>Show Email Address</label><br>
-
-                            <label><input type="checkbox" name="checklist[]" value="Activation_Date" <?php echo (isset($selected['Activation_Date']) ? $selected['Activation_Date'] : ""); ?>>Show Start Date</label><br>
-                        </div>
-                    </form>
+    <!-- HTML for nav links and logo -->
+    <div class="page_container">
+        <div class="nav_bar">
+            <div class="nav_stack nav_logo">
+                <h2>AdminMax</h2>
+            </div>
+            <div class="nav_stack">
+                <div class="nav_links">
+                    <div class="n_link">
+                        <button class="nav_button nav_button_others" onclick="window.location.href = '../index.php';">Home</button>
+                    </div>
+                    <div class="n_link">
+                        <button class="nav_button nav_button_others" onclick="window.location.href = '../PM-pages/personnel.php';">Personnel</button>
+                    </div>
+                    <div class="n_link">
+                        <button class="nav_button nav_button_others" onclick="window.location.href = '../PM-pages/events.php';">Events</button>
+                    </div>
+                    <div class="n_link">
+                        <button class="nav_button nav_button_others" onclick="window.location.href = '../PM-pages/messaging.php';">Messaging</button>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <div class="add_button"><button onclick="openAddUser()" class="personnel_button">Add Person</button>
-                <input type='submit' name='create_message' value='Send Message' class='personnel_button' /></div>
+        <div class="home_body personnel_bg">
+            <!-- Page content goes here -->
+            <div id="selections">
+                <form action="" method="post">
+                    <!-- 3 divs that contain three columns of sort, filter, and view options -->
+                    <div style="width: 33%;float: left;height: 100%;padding-right:20px;padding-top:5px;text-align:right;">
+
+                        <!-- create dropdown boxes with retrieved column names from database -->
+                        Sort by: <select name="sort_by" style="margin-bottom: 2px;">
+                            <?php
+                            //make sort box based on column headers
+                            while ($row = $result1->fetch_assoc()) {
+                                echo '<option value="' . $row['COLUMN_NAME'] . '" ' . ((isset($_POST["sort_by"]) && $_POST["sort_by"] == $row['COLUMN_NAME']) ? "selected='selected'" : "") . '>' . $row['COLUMN_NAME'] . '</option>';
+                            }
+                            ?>
+                        </select> <br>
+                        Filter by: <select name="filter_by" style="margin-bottom: 2px;">
+                            <?php
+                            //make filter box based on column headers
+                            echo '<option value="none">None</option>';
+                            while ($row = $result2->fetch_assoc()) {
+                                echo '<option value="' . $row['COLUMN_NAME'] . '" ' . ((isset($_POST["filter_by"]) && $_POST["filter_by"] == $row['COLUMN_NAME']) ? "selected='selected'" : "") . '>' . $row['COLUMN_NAME'] . '</option>';
+                            }
+                            ?>
+                        </select><br>
+                        <!-- Text box for filter key -->
+                        Key: <input type="text" name="filter_key" maxlength="14" style="width: 114px; margin-bottom: 2px;" value="<?php echo isset($_POST['filter_key']) ? $_POST['filter_key'] : '' ?>">
+                        <br>
+
+                        <!-- Go button to print table -->
+                        <input type="submit" name="test" id="test" value="Go" /><br />
+
+                    </div>
+
+                    <!-- check boxes for data shown in table, PHP for holding value -->
+                    <div style="width: 33%;float: left;height: 100%;padding-top:10px;">
+                        <label><input type="checkbox" name="checklist[]" value="user_ID" <?php echo (isset($selected['user_ID'])      ? $selected['user_ID'] : ""); ?>>Show ID</label><br>
+
+                        <label><input type="checkbox" name="checklist[]" value="First_Name" <?php echo (isset($selected['First_Name'])   ? $selected['First_Name'] : ""); ?>>Show First Name</label><br>
+
+                        <label><input type="checkbox" name="checklist[]" value="Last_Name" <?php echo (isset($selected['Last_Name'])    ? $selected['Last_Name'] : ""); ?>>Show Last Name</label><br>
+
+                        <label><input type="checkbox" name="checklist[]" value="Organization" <?php echo (isset($selected['Organization']) ? $selected['Organization'] : ""); ?>>Show Organization</label><br>
+                    </div>
+
+                    <!-- check boxes for data shown in table, PHP for holding value -->
+                    <div style="width: 28%;float: left;height: 100%;padding-top:10px;">
+                        <label><input type="checkbox" name="checklist[]" value="Pay_Grade" <?php echo (isset($selected['Pay_Grade']) ? $selected['Pay_Grade'] : ""); ?>>Show Pay Grade</label><br>
+
+                        <label><input type="checkbox" name="checklist[]" value="Email" <?php echo (isset($selected['Email']) ? $selected['Email'] : ""); ?>>Show Email Address</label><br>
+
+                        <label><input type="checkbox" name="checklist[]" value="Activation_Date" <?php echo (isset($selected['Activation_Date']) ? $selected['Activation_Date'] : ""); ?>>Show Start Date</label><br>
+                    </div>
+                </form>
+            </div>
+
+            <div class="add_button"><button onclick="openAddUser()" class="nav_button">Add Person</button>
+                <input type='submit' name='create_message' value='Send Message' class='nav_button' onclick='GetEmails()' /></div>
 
             <!-- HTML to build Add User box -->
             <div id="add_user_box" class="add_user_closed">
@@ -150,7 +156,7 @@
                                 </td>
                             </tr>
                         </table>
-                        <input class="add_user_confirm" type="submit" name="add_user_button" style="margin-top:5px;" value="Add Person" />
+                        <input class="nav_button" type="submit" name="add_user_button" style="margin-top:10px;" value="Add Person" />
                     </div>
                 </form>
             </div>
@@ -240,7 +246,7 @@
                     //append ordering value
                     $sql = $sql . " ORDER BY " . $sort_value;
 
-                    echo '<div id="table_wrapper">';
+                    echo '<div class="table_wrapper">';
                     //code to print table
                     if ($res = mysqli_query($link, $sql)) {
                         //print column headers with select/dis-select all box
@@ -261,7 +267,7 @@
                             while ($row = mysqli_fetch_array($res)) {
                                 $UID = $row['user_ID'];
                                 echo "<tr class='person_row'>";
-                                echo "<td class='person_data'><input type='checkbox' name='rowSelectCheckBox' value='" . $row['Email'] . "'/></td>";
+                                echo "<td class='person_data'><input class='email_check' type='checkbox' name='rowSelectCheckBox' value='" . $row['Email'] . "'/></td>";
                                 if ($table_select[0]) echo "<td class='person_data'>" . $row['user_ID'] . "</td>";
                                 if ($table_select[1]) echo "<td class='person_data'>" . $row['First_Name'] . "</td>";
                                 if ($table_select[2]) echo "<td class='person_data'>" . $row['Last_Name'] . "</td>";
@@ -269,14 +275,13 @@
                                 if ($table_select[4]) echo "<td class='person_data'>" . $row['Pay_Grade'] . "</td>";
                                 if ($table_select[5]) echo "<td class='person_data' style='width: 200px;'>" . $row['Email'] . "</td>";
                                 if ($table_select[6]) echo "<td class='person_data' style='width: 90px;'>" . $row['Activation_Date'] . "</td>";
-                                echo "<td class='person_data' style='width: 50px;'><button type='submit' class='trigger view_button' data-modal-trigger='trigger-" . $row['user_ID'] . "'>View Info</button></td>";
+                                echo "<td class='person_data' style='width: 50px;'><button type='submit' style='margin:0;' class='trigger nav_button' data-modal-trigger='trigger-" . $row['user_ID'] . "'>View Info</button></td>";
                                 echo "</tr>";
                             }
                             echo "</table>";
 
                             echo "<div class='add_button'>";
-                            //echo "<input type='submit' name='create_message' value='Send Message' onclick='GetEmails()' class='personnel_button'/>";
-                            echo "<button onclick='GetEmails()' class='personnel_button'>Send Message</button>";
+                            echo "<button onclick='GetEmails()' class='nav_button'>Send Message</button>";
                             echo "</div>";
 
 
@@ -394,24 +399,23 @@
             <?php
             if (isset($_POST['create_message'])) {
                 if (isset($_POST['rowSelectCheckBox'])) {
-                    foreach($_POST['rowSelectCheckBox'] as $select) {
+                    foreach ($_POST['rowSelectCheckBox'] as $select) {
                         echo $select;
                     }
 
-                    //$row_selects = $_POST['rowSelectCheckBox'];
-                    //if (is_array($row_selects) || is_object($row_selects)) {
-                     //   foreach($row_selects as $check) {
-                      //          echo $check; //echoes the value set in the HTML form for each checked checkbox.
-                                            //so, if I were to check 1, 3, and 5 it would echo value 1, value 3, value 5.
-                                            //in your case, it would echo whatever $row['Report ID'] is equivalent to.
-                       // }
-                    //} else {
-                    //    echo $row_selects;
-                    //}
+                    $row_selects = $_POST['rowSelectCheckBox'];
+                    if (is_array($row_selects) || is_object($row_selects)) {
+                        foreach ($row_selects as $check) {
+                            echo $check; 
+                        }
+                    } else {
+                        echo $row_selects;
+                    }
                 }
             }
             ?>
 
+            <br><br>
 
             <?php //removes user upon button press
             if (array_key_exists('confirm_remove', $_POST)) {
@@ -424,41 +428,55 @@
             }
             ?>
 
-            <!-- adds spacing to bottom of page -->
-            <br><br><br>
-
-            <!-- Javascript to open and close modal boxes    -->
-            <script>
-                const buttons = document.querySelectorAll(`button[data-modal-trigger]`);
-
-                for (let button of buttons) {
-                    modalEvent(button);
-                }
-
-                function modalEvent(button) {
-                    button.addEventListener("click", () => {
-                        const trigger = button.getAttribute("data-modal-trigger");
-                        const modal = document.querySelector(`[data-modal=${trigger}]`);
-                        const contentWrapper = modal.querySelector(".content-wrapper");
-                        const close = modal.querySelector(".close");
-
-                        close.addEventListener("click", () => modal.classList.remove("open"));
-                        modal.addEventListener("click", () => modal.classList.remove("open"));
-                        contentWrapper.addEventListener("click", e => e.stopPropagation());
-
-                        modal.classList.toggle("open");
-                    });
-                }
-            </script>
-
-            <!-- Stops form resubmission on page refresh -->
-            <script>
-                if (window.history.replaceState) {
-                    window.history.replaceState(null, null, window.location.href);
-                }
-            </script>
-
         </div>
+
+
+
+        <div class="footer">
+            <nav>
+                <a class='footer_link' href="../index.php">Home</a> |
+                <a class='footer_link' href="../PM-pages/personnel.php">Personnel</a> |
+                <a class='footer_link' href="../PM-pages/events.php">Events</a> |
+                <a class='footer_link' href="../PM-pages/messaging.php">Messaging</a>
+            </nav>
+            <p class="footer_note">Devs: Alex Whitaker, Cainan Howard, Sammy Awad, Timothy Krenz</p>
+        </div>
+
+    </div>
+
+    <!-- Javascript to open and close modal boxes    -->
+    <script>
+        const buttons = document.querySelectorAll(`button[data-modal-trigger]`);
+
+        for (let button of buttons) {
+            modalEvent(button);
+        }
+
+        function modalEvent(button) {
+            button.addEventListener("click", () => {
+                const trigger = button.getAttribute("data-modal-trigger");
+                const modal = document.querySelector(`[data-modal=${trigger}]`);
+                const contentWrapper = modal.querySelector(".content-wrapper");
+                const close = modal.querySelector(".close");
+
+                close.addEventListener("click", () => modal.classList.remove("open"));
+                modal.addEventListener("click", () => modal.classList.remove("open"));
+                contentWrapper.addEventListener("click", e => e.stopPropagation());
+
+                modal.classList.toggle("open");
+            });
+        }
+    </script>
+
+    <!-- Stops form resubmission on page refresh -->
+    <script>
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
+
+
+
     </div>
 
 </body>
