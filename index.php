@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <!-- <link rel="stylesheet" type="text/css" href="PM-css/styles.css"> -->
+    <link rel="stylesheet" type="text/css" href="PM-css/styles.css">
     <link rel="stylesheet" type="text/css" href="PM-css/home-style.css">
 
     <title>Personnel Management</title>
@@ -13,33 +13,31 @@
 </head>
 
 <body>
-    <!-- <div class="page_body" style="margin: 0 -16px 0 0px; padding: 0;"> -->
-
     <!-- HTML for nav links and logo -->
-    <div class="page_container">
-        <div class="nav_bar">
+    <div class="page_container" style="background-color: deepskyblue;">
+        <div class="nav_bar"  style="background-color: white;">
             <div class="nav_stack nav_logo">
-                <h2>AdminMax</h2>
+                <h2 style="color: black;">AdminMax</h2>
             </div>
             <div class="nav_stack">
                 <div class="nav_links">
                     <div class="n_link">
-                        <button class="nav_button" onclick="window.location.href = 'home.php';">Home</button>
+                        <button class="nav_button nav_button_home" onclick="window.location.href = 'index.php';">Home</button>
                     </div>
                     <div class="n_link">
-                        <button class="nav_button" onclick="window.location.href = 'PM-pages/personnel.php';">Personnel</button>
+                        <button class="nav_button nav_button_home" onclick="window.location.href = 'PM-pages/personnel.php';">Personnel</button>
                     </div>
                     <div class="n_link">
-                        <button class="nav_button" onclick="window.location.href = 'PM-pages/events.php';">Events</button>
+                        <button class="nav_button nav_button_home" onclick="window.location.href = 'PM-pages/events.php';">Events</button>
                     </div>
                     <div class="n_link">
-                        <button class="nav_button" onclick="window.location.href = 'PM-pages/messaging.php';">Messaging</button>
+                        <button class="nav_button nav_button_home" onclick="window.location.href = 'PM-pages/messaging.php';">Messaging</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="home_body">
+        <div class="home_body" style="min-height: 600px;">
             <h1 class="page_title">AdminMax</h1>
             <p class="page_caption">Take Control</p>
             <div class="card_body">
@@ -97,9 +95,9 @@
         </div>
 
 
-        <div class="footer">
+        <div class="footer" style="position: fixed; bottom: 0; left:0;">
             <nav>
-                <a class='footer_link' href="home.php">Home</a> |
+                <a class='footer_link' href="index.php">Home</a> |
                 <a class='footer_link' href="PM-pages/personnel.php">Personnel</a> |
                 <a class='footer_link' href="PM-pages/events.php">Events</a> |
                 <a class='footer_link' href="PM-pages/messaging.php">Messaging</a>
