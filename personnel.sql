@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 14, 2020 at 05:07 PM
+-- Generation Time: Mar 05, 2020 at 04:29 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -21,6 +21,71 @@ SET time_zone = "+00:00";
 --
 -- Database: `personnel`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `attendance`
+--
+
+CREATE TABLE `attendance` (
+  `event_ID` int(11) NOT NULL,
+  `0` varchar(1) DEFAULT NULL,
+  `1` varchar(1) DEFAULT NULL,
+  `2` varchar(1) DEFAULT NULL,
+  `3` varchar(1) DEFAULT NULL,
+  `4` varchar(1) DEFAULT NULL,
+  `5` varchar(1) DEFAULT NULL,
+  `6` varchar(1) DEFAULT NULL,
+  `7` varchar(1) DEFAULT NULL,
+  `8` varchar(1) DEFAULT NULL,
+  `9` varchar(1) DEFAULT NULL,
+  `10` varchar(1) DEFAULT NULL,
+  `11` varchar(1) DEFAULT NULL,
+  `12` varchar(1) DEFAULT NULL,
+  `13` varchar(1) DEFAULT NULL,
+  `14` varchar(1) DEFAULT NULL,
+  `15` varchar(1) DEFAULT NULL,
+  `16` varchar(1) DEFAULT NULL,
+  `17` varchar(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `attendance`
+--
+
+INSERT INTO `attendance` (`event_ID`, `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `11`, `12`, `13`, `14`, `15`, `16`, `17`) VALUES
+(0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(3, 'L', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(7, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `events`
+--
+
+CREATE TABLE `events` (
+  `event_ID` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `date` date NOT NULL,
+  `attendance` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `events`
+--
+
+INSERT INTO `events` (`event_ID`, `name`, `date`, `attendance`) VALUES
+(0, 'test event', '2020-03-17', 0),
+(1, 'event1', '2020-03-17', 0),
+(2, 'event2', '2020-04-02', 0),
+(3, 'past_event', '2020-02-10', 12),
+(4, 'new_event', '2020-03-18', 0),
+(7, 'test event', '2020-03-17', 0);
 
 -- --------------------------------------------------------
 
@@ -86,11 +151,24 @@ INSERT INTO `people` (`user_ID`, `First_Name`, `Last_Name`, `Email`, `Activation
 (13, 'Miles', 'Tone', 'step_one@email.com', '2020-02-12', 1, 2, 0, 0, 0, 0, 0, 'user'),
 (14, 'Hilary', 'Ouse', 'laughing_stock@email.com', '2020-02-12', 1, 2, 0, 0, 0, 0, 0, 'user'),
 (15, 'Hugh', 'Saturation', 'tickledPink@email.com', '2020-02-12', 2, 1, 0, 0, 0, 0, 0, 'user'),
-(16, 'Will', 'Barrow', 'one_wheel@email.com', '2020-02-12', 3, 1, 0, 0, 0, 0, 0, 'user');
+(16, 'Will', 'Barrow', 'one_wheel@email.com', '2020-02-12', 3, 1, 0, 0, 0, 0, 0, 'user'),
+(17, 'Test', 'User', 'test_user@email.com', '2020-03-02', 1, 1, 0, 0, 0, 0, 0, 'user');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `attendance`
+--
+ALTER TABLE `attendance`
+  ADD UNIQUE KEY `event_ID` (`event_ID`);
+
+--
+-- Indexes for table `events`
+--
+ALTER TABLE `events`
+  ADD PRIMARY KEY (`event_ID`);
 
 --
 -- Indexes for table `groups`
