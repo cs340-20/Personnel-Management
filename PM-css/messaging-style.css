@@ -1,0 +1,32 @@
+.message_bg {
+    background: url('https://api.iconify.design/bx:bx-comment-detail.svg?color=rgba(0%2C0%2C0%2C0.3)') no-repeat center center / contain;
+    background-size: 20rem;
+    background-color: white;
+    background-position-x: 0;
+  }
+
+
+.messaging_wrapper {
+    margin: 30px auto;
+    width: 60%;
+    min-height: 80vh;
+    text-align: left;
+}
+
+.message_input {
+    min-width: 100px;
+    padding: 5px 10px;
+    margin: 10px auto;
+    border: solid;
+    border-radius: 15px;
+    border-color: black;    
+    background-color: white;
+}
+
+.msg_wide {
+    width: 100%;
+}
+
+.msg_cont {
+    min-height: 300px;
+}
