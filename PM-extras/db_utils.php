@@ -66,9 +66,27 @@ function get_user_name($link, $user_ID)
 		$row = mysqli_fetch_array($result);
 
 		$full_name = $row['Last_Name'] . ", " . $row['First_Name'];
-
 	} else {
-		echo "ERROR: Could not execute sql query."
+		echo $user_ID. " ERROR: Could not execute sql query."
+			. mysqli_error($link);
+	}
+
+	return $full_name;
+}
+
+function build_col_name($link, $user_ID)
+{
+	$full_name = "";
+
+	$query = "SELECT Last_Name, First_Name FROM People WHERE People.user_ID = " . $user_ID;
+
+	if ($result = mysqli_query($link, $query)) {
+
+		$row = mysqli_fetch_array($result);
+
+		$full_name = $row['Last_Name'] . "" . $row['First_Name'];
+	} else {
+		echo $user_ID. " ERROR: Could not execute sql query."
 			. mysqli_error($link);
 	}
 
@@ -194,6 +212,13 @@ function get_event_att($link, $EID)
 	return $ret;
 }
 
+function set_event_att($link, $ev, $att_set) {
+	foreach ($att_set as $key => $att) {
+		mysqli_query($link,  "UPDATE attendance SET `" .build_col_name($link, $key). "`=\"" .$att. "\" WHERE event_ID=".$ev);
+	}
+
+}
+
 //adds event to events table
 function add_event($link, $event_name, $event_date)
 {
@@ -250,12 +275,14 @@ function remove_att_event($link, $EID)
 
 function add_att_user($link, $UID)
 {
-	mysqli_query($link, "ALTER TABLE personnel.attendance ADD `" . $UID . "` varchar(1);");
+	if(!mysqli_query($link, "ALTER TABLE personnel.attendance ADD " . $UID . " varchar(1);")) {
+		echo "failed";
+	}
 }
 
 function remove_att_user($link, $UID)
 {
-	mysqli_query($link, "ALTER TABLE personnel.attendance DROP COLUMN `" . $UID . "`");
+	mysqli_query($link, "ALTER TABLE personnel.attendance DROP COLUMN " . $UID);
 }
 
 //lots of comparisons and function calls... 
@@ -299,7 +326,7 @@ function update_att_events($link)
 	$UID_list = [];
 	$att_UID_list = [];
 	$sql_get_ids = mysqli_query($link, "SELECT people.user_ID FROM people");
-	while ($ID = mysqli_fetch_array($sql_get_ids)) $UID_list[] = $ID["user_ID"];
+	while ($ID = mysqli_fetch_array($sql_get_ids)) $UID_list[] = build_col_name($link, $ID["user_ID"]);
 
 	$result = $link->query("SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` 
                                     WHERE `TABLE_SCHEMA`='personnel' AND `TABLE_NAME`='attendance' 

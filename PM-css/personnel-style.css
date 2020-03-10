@@ -8,7 +8,7 @@
     background: url('https://api.iconify.design/bx:bx-user.svg?color=rgba(0%2C0%2C0%2C0.3)') no-repeat center center / contain;
     background-size: 20rem;
     background-color: white;
-    background-position-x: 0;
+    background-position-x: 0rem;
   }
 
 
@@ -301,6 +301,7 @@
     float: right;
     height: 30px;
     margin: 10px 20px;
+    padding: 0 3px;
     color: white;
     font-weight: bold;
     border-radius: 0.3125rem;

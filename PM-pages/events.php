@@ -46,7 +46,7 @@
             </div>
         </div>
 
-        <div class="home_body">
+        <div class="home_body events_bg">
             <!-- Page content goes here -->
 
             <div class="event_col_l">
@@ -113,6 +113,8 @@
                             }
                             echo "</table>";
 
+
+
                             $res = mysqli_query($link, $sql);
 
                             echo '<table class="person_table">';
@@ -142,39 +144,6 @@
                         }
                     }
 
-
-
-                    ?>
-
-                    <?php
-                    if (isset($_POST['create_message'])) {
-                        if (isset($_POST['rowSelectCheckBox'])) {
-                            foreach ($_POST['rowSelectCheckBox'] as $select) {
-                                echo $select;
-                            }
-
-                            $row_selects = $_POST['rowSelectCheckBox'];
-                            if (is_array($row_selects) || is_object($row_selects)) {
-                                foreach ($row_selects as $check) {
-                                    echo $check;
-                                }
-                            } else {
-                                echo $row_selects;
-                            }
-                        }
-                    }
-                    ?>
-
-
-                    <?php //removes user upon button press
-                    if (array_key_exists('confirm_remove', $_POST)) {
-                        remove_user($link, $_POST['confirm_remove']);
-                    ?>
-                        <script>
-                            window.location.href = window.location.href;
-                        </script>
-                    <?php
-                    }
                     ?>
 
                 </div>
@@ -198,6 +167,7 @@
 
                         $name = (get_event_name($link, $ev));
 
+                        echo "<form method='POST'>";
                         echo "<h2>".$name['name']."</h2>";
 
                         echo '<table class="person_table">';
@@ -212,11 +182,10 @@
                             echo "<td class='person_data'>" . get_user_name($link, $UID) . "</td>";
                             echo "<td class='person_data'>";
                             echo "<select name='att-".$ev."-".$UID."'>";
-                            //$res[strval($UID)]
-                            echo "<option".(($res[strval($UID)] == 'U') ? " selected" : "") .">Unassigned</option>";
-                            echo "<option".(($res[strval($UID)] == 'P') ? " selected" : "") .">Present</option>";
-                            echo "<option".(($res[strval($UID)] == 'L') ? " selected" : "") .">Late</option>";
-                            echo "<option".(($res[strval($UID)] == 'A') ? " selected" : "") .">Absent</option>";
+                            echo "<option".(($res[build_col_name($link, $UID)] == 'U') ? " selected" : "") ." value='U'>Unassigned</option>";
+                            echo "<option".(($res[build_col_name($link, $UID)] == 'P') ? " selected" : "") ." value='P'>Present</option>";
+                            echo "<option".(($res[build_col_name($link, $UID)] == 'L') ? " selected" : "") ." value='L'>Late</option>";
+                            echo "<option".(($res[build_col_name($link, $UID)] == 'A') ? " selected" : "") ." value='A'>Absent</option>";
                             echo "</select>";
                             echo "</td>";
                             echo "</tr>";
@@ -224,8 +193,22 @@
 
                         echo "</table>";
 
+                        echo "<input type='submit' value='Update' class='nav_button' name='update-".$ev."'/></form>";
+
+
+                        if (array_key_exists('update-'.$ev, $_POST)) {
+                            $att_set = [];
+                            foreach ($UID_list as $UID) {
+                                $att_set[strval($UID)] = $_POST['att-'.$ev.'-'.$UID];
+                            }
+                            set_event_att($link, $ev, $att_set);
+                            echo "<meta http-equiv='refresh' content='0'>";
+                        }
+
+
                         echo "</div>";
                         echo "</div>";
+
                     }
                     ?>
                 </div>

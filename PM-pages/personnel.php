@@ -369,7 +369,7 @@
                                                     <button class="action" onclick="toggleConfirm(<?php echo $row['user_ID'] ?>)">Remove User</button>
                                                 </footer>
                                                 <div id="confirm_box_<?php echo $row["user_ID"] ?>" class="confirm_box confirm_closed">
-                                                    <p>Are you sure you want to delete <?php echo get_user_name($link, $row['user_ID']) ?>? This can't be undone!</p>
+                                                    <p style='margin-top: 15px;'>Are you sure you want to delete <?php echo get_user_name($link, $row['user_ID']) ?>? This can't be undone!</p>
                                                     <form action="" method="POST">
                                                         <button type="submit" name="confirm_remove" value="<?php echo $row['user_ID'] ?>" class="confirm_button">Confirm</button>
                                                     </form>
