@@ -7,6 +7,7 @@ INTRODUCTION
 In the first half of the semester, the development of the core features of AdminMax has been steady and fruitful. The minimum viable version of the following features are complete: the homepage, methods to add, remove, and filter users, attendance and event management. The login solution and messaging feature are still in progress. Regarding changes, we moved toward a more user friendly and eye-pleasing interface. Other than the interface, we had no major changes to design or requirements. 
 
 CUSTOMER VALUE
+
 No changes
 
 TECHNOLOGY
