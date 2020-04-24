@@ -40,6 +40,7 @@ the main initiators in terms of work spread. This project was oriented to help w
 Cainan shifted the work load to contibrute to that result. The roles in terms of the semester have been static. 
 
 ### Project management
+In the early stages of development, the project was divided into stages based on certain core features that we wanted to implement. Each member took on the implementation of one of these core features. Once these few main features were implemented, the management structure took on a more loose form in which smaller features and bug fixes were handled on the fly in an ad hoc fashion.
 
 ### Reflection 
 Our planning process went well. We always had a well defined end result for the features that were planned. In the development 
