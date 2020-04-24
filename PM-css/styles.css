@@ -80,8 +80,10 @@ body {
   }
 
   .nav_stack {
-    width: 100%;
+    width: 80%;
     position: absolute;
+    left: 50%;
+    margin-left: -40%;
   }
 
   .nav_logo {
@@ -154,6 +156,12 @@ body {
   .nav_button_others:hover {
     background-color: white;
     color: deepskyblue;
+  }
+
+  .log_button {
+    cursor: pointer;
+    float: right;
+    z-index: 10;
   }
 
 /* table formatting */

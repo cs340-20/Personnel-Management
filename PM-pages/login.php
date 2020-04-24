@@ -1,10 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 
 <head>
     <link rel="stylesheet" type="text/css" href="../PM-css/styles.css">
     <link rel="stylesheet" type="text/css" href="../PM-css/home-style.css">
-    <link rel="stylesheet" type="text/css" href="../PM-css/personnel-style.css">
+    <link rel="stylesheet" type="text/css" href="../PM-css/login-style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
 
     <!-- javascript functions for page -->
     <script type="text/javascript" src="../PM-script/personnel_script.js"></script>
@@ -43,11 +44,30 @@
         <div class="home_body">
             <!-- Page content goes here -->
 
+            <div class="login">
+                <h1>Login</h1>
+                
+                <?php  
+                    if (isset($_GET['err'])) {
+                        if ($_GET['err'] == 1) {
+                            echo '<br><p style="align: center; color: red;">Invalid Username</p>';
+                        }
+                    }
+                ?>
+                
+                <form action="../PM-extras/authenticate.php" method="post">
+                    <label for="username">
+                        <i class="fas fa-user"></i>
+                    </label>
+                    <input type="text" name="username" placeholder="Username" id="username" required>
+                    <input type="submit" value="Login">
+                </form>
+            </div>
 
         </div>
 
 
-
+<!-- 
         <div class="footer">
             <nav>
                 <a class='footer_link' href="../index.php">Home</a> |
@@ -56,7 +76,7 @@
                 <a class='footer_link' href="../PM-pages/messaging.php">Messaging</a>
             </nav>
             <p class="footer_note">Devs: Alex Whitaker, Cainan Howard, Sammy Awad, Timothy Krenz</p>
-        </div>
+        </div> -->
 
 </body>
 

@@ -8,15 +8,18 @@
     <title>Personnel Management</title>
 
     <script src="https://code.iconify.design/1/1.0.4/iconify.min.js"></script>
-
+    <script src="PM-script/logout.js"></script>
 
 </head>
 
 <body>
+    <?php require "PM-extras/db_utils.php";
+    ?>
+
     <!-- HTML for nav links and logo -->
     <div class="page_container" style="background-color: deepskyblue;">
         <div class="nav_bar"  style="background-color: white;">
-            <div class="nav_stack nav_logo">
+            <div class="nav_logo">
                 <h2 style="color: black;">AdminMax</h2>
             </div>
             <div class="nav_stack">
@@ -35,6 +38,11 @@
                     </div>
                 </div>
             </div>
+            <?php if (check_session()) { ?>
+                <button class="nav_button nav_button_home log_button" onclick="logout(true)">Log Out</button>
+            <?php } else { ?>
+                <button class="nav_button nav_button_home log_button" onclick="window.location.href = 'PM-pages/login.php';">Log In</button>
+            <?php } ?>
         </div>
 
         <div class="home_body" style="min-height: 600px;">
@@ -105,8 +113,6 @@
             <p class="footer_note">Devs: Alex Whitaker, Cainan Howard, Sammy Awad, Timothy Krenz</p>
         </div>
     </div>
-
-
 
     <script type="text/javascript" src="PM-script/index_card1.js"></script>
     <script type="text/javascript" src="PM-script/index_card2.js"></script>

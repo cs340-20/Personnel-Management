@@ -1,5 +1,21 @@
 <?php
 
+function check_session()
+{
+	if (session_status() == PHP_SESSION_NONE) {
+		session_start();
+	}
+
+	if (!array_key_exists("loggedin", $_SESSION)) $_SESSION['loggedin'] = false;
+	
+	if (session_status() === PHP_SESSION_ACTIVE) {	
+		if ($_SESSION["loggedin"] == true) return true;
+	} else {
+		$_SESSION["loggedin"] = false;
+	}
+
+	return false;
+}
 
 function create_connection()
 {
@@ -41,7 +57,6 @@ function add_user($link, $new_user)
 	} else {
 		add_att_user($link, $num);
 	}
-
 }
 
 function remove_user($link, $remove_ID)
@@ -67,11 +82,26 @@ function get_user_name($link, $user_ID)
 
 		$full_name = $row['Last_Name'] . ", " . $row['First_Name'];
 	} else {
-		echo $user_ID. " ERROR: Could not execute sql query."
+		echo $user_ID . " ERROR: Could not execute sql query."
 			. mysqli_error($link);
 	}
 
 	return $full_name;
+}
+
+function get_email($link, $UID) {
+	$query = "SELECT email FROM People WHERE People.user_ID = " . $UID;
+
+	if ($result = mysqli_query($link, $query)) {
+
+		$row = mysqli_fetch_array($result);
+
+	} else {
+		echo $user_ID . " ERROR: Could not execute sql query."
+			. mysqli_error($link);
+	}
+
+	return $row['email'];
 }
 
 function build_col_name($link, $user_ID)
@@ -86,21 +116,20 @@ function build_col_name($link, $user_ID)
 
 		$full_name = $row['Last_Name'] . "" . $row['First_Name'];
 	} else {
-		echo $user_ID. " ERROR: Could not execute sql query."
+		echo $user_ID . " ERROR: Could not execute sql query."
 			. mysqli_error($link);
 	}
 
 	return $full_name;
 }
 
-function get_event_name($link, $event_ID) 
+function get_event_name($link, $event_ID)
 {
 	$query = "SELECT name FROM events WHERE events.event_ID = " . $event_ID;
 
 	if ($result = mysqli_query($link, $query)) {
 
 		$row = mysqli_fetch_array($result);
-
 	} else {
 		echo "ERROR: Could not execute sql query."
 			. mysqli_error($link);
@@ -119,6 +148,11 @@ function get_groupnames($link)
 		echo "ERROR: Could not get group names.";
 	}
 	return $names;
+}
+
+function is_supervisor($link, $UID, $sup_UID) {
+	$row = get_user_info($link, $UID);
+	return ($row['supervisor_ID'] == $sup_UID);
 }
 
 function get_columns($link)
@@ -170,16 +204,18 @@ function get_user_info($link, $UID)
 	return $row;
 }
 
-function get_event_list($link) {
+function get_event_list($link)
+{
 	$res = mysqli_query($link, "SELECT event_ID FROM events ORDER BY events.date");
 	$events = [];
 	while ($row = mysqli_fetch_array($res)) {
-		$events[] = $row['event_ID'];	
+		$events[] = $row['event_ID'];
 	}
 	return $events;
 }
 
-function get_UID_list($link) {
+function get_UID_list($link)
+{
 	$res = mysqli_query($link, "SELECT user_ID FROM people ORDER BY Last_Name");
 	$ret = [];
 	while ($arr = mysqli_fetch_array($res)) $ret[] = $arr['user_ID'];
@@ -196,9 +232,9 @@ function get_event_info($link, $event_ID)
 
 function get_event_att($link, $EID)
 {
-	$res = mysqli_query($link, "SELECT * FROM attendance WHERE event_ID = ". $EID);
+	$res = mysqli_query($link, "SELECT * FROM attendance WHERE event_ID = " . $EID);
 	$row = mysqli_fetch_array($res);
-	
+
 	$ret = [];
 
 	foreach ($row as $key => $value) {
@@ -212,11 +248,11 @@ function get_event_att($link, $EID)
 	return $ret;
 }
 
-function set_event_att($link, $ev, $att_set) {
+function set_event_att($link, $ev, $att_set)
+{
 	foreach ($att_set as $key => $att) {
-		mysqli_query($link,  "UPDATE attendance SET `" .build_col_name($link, $key). "`=\"" .$att. "\" WHERE event_ID=".$ev);
+		mysqli_query($link,  "UPDATE attendance SET `" . build_col_name($link, $key) . "`=\"" . $att . "\" WHERE event_ID=" . $ev);
 	}
-
 }
 
 //adds event to events table
@@ -275,7 +311,7 @@ function remove_att_event($link, $EID)
 
 function add_att_user($link, $UID)
 {
-	if(!mysqli_query($link, "ALTER TABLE personnel.attendance ADD " . $UID . " varchar(1);")) {
+	if (!mysqli_query($link, "ALTER TABLE personnel.attendance ADD " . $UID . " varchar(1);")) {
 		echo "failed";
 	}
 }
@@ -338,7 +374,7 @@ function update_att_events($link)
 				if (!in_array($UID, $att_UID_list)) {
 					//add column to attendance
 					add_att_user($link, $UID);
-				} 
+				}
 			} else {
 				add_att_user($link, $UID);
 			}
