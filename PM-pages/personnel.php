@@ -8,6 +8,7 @@
 
     <!-- javascript functions for page -->
     <script type="text/javascript" src="../PM-script/personnel_script.js"></script>
+    <script src="../PM-script/logout.js"></script>
 
 
     <title>Personnel Management</title>
@@ -17,6 +18,7 @@
 <body>
     <!-- ensures that db_utils is loaded -->
     <?php require '../PM-extras/db_utils.php';
+    if (!check_session()) header("location: login.php");
     $link = create_connection();
 
     //pulls columns from table for sort selection
@@ -35,7 +37,7 @@
     <!-- HTML for nav links and logo -->
     <div class="page_container">
         <div class="nav_bar">
-            <div class="nav_stack nav_logo">
+            <div class="nav_logo">
                 <h2>AdminMax</h2>
             </div>
             <div class="nav_stack">
@@ -54,6 +56,11 @@
                     </div>
                 </div>
             </div>
+            <?php if (check_session()) { ?>
+                <button class="nav_button nav_button_others log_button" onclick="logout()">Log Out</button>
+            <?php } else { ?>
+                <button class="nav_button nav_button_others log_button" onclick="window.location.href = '../PM-pages/login.php';">Log In</button>
+            <?php } ?>
         </div>
 
         <div class="home_body personnel_bg">
@@ -112,8 +119,12 @@
                 </form>
             </div>
 
-            <div class="add_button"><button onclick="openAddUser()" class="nav_button">Add Person</button>
-                <input type='submit' name='create_message' value='Send Message' class='nav_button' onclick='GetEmails()' /></div>
+            <?php if ($_SESSION['permissions'] != "user") { ?>
+            <div class="add_button">
+                <button onclick="openAddUser()" class="nav_button">Add Person</button>
+                <input type='submit' name='create_message' value='Send Message' class='nav_button' onclick='GetEmails()' />
+            </div>
+            <?php } ?>
 
             <!-- HTML to build Add User box -->
             <div id="add_user_box" class="add_user_closed">
@@ -280,10 +291,11 @@
                             }
                             echo "</table>";
 
+                            if ($_SESSION['permissions'] != "user") {
                             echo "<div class='add_button'>";
                             echo "<button onclick='GetEmails()' class='nav_button'>Send Message</button>";
                             echo "</div>";
-
+                            }
 
                             mysqli_free_result($res);
 
@@ -366,7 +378,9 @@
                                                     </div>
                                                 </div>
                                                 <footer class="modal-footer">
+                                                    <?php if ($_SESSION['permissions'] === "admin") { ?>
                                                     <button class="action" onclick="toggleConfirm(<?php echo $row['user_ID'] ?>)">Remove User</button>
+                                                    <?php } ?>
                                                 </footer>
                                                 <div id="confirm_box_<?php echo $row["user_ID"] ?>" class="confirm_box confirm_closed">
                                                     <p style='margin-top: 15px;'>Are you sure you want to delete <?php echo get_user_name($link, $row['user_ID']) ?>? This can't be undone!</p>

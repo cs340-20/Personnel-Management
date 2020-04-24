@@ -8,6 +8,7 @@
 
     <!-- javascript functions for page -->
     <script type="text/javascript" src="../PM-script/event_script.js"></script>
+    <script src="../PM-script/logout.js"></script>
 
     <!-- javascript functions for page -->
 
@@ -18,6 +19,8 @@
 
 <body>
     <?php require '../PM-extras/db_utils.php';
+    if (!check_session()) header("location: login.php");
+
     $link = create_connection();
     update_att_events($link);
     ?>
@@ -25,7 +28,7 @@
     <!-- HTML for nav links and logo -->
     <div class="page_container">
         <div class="nav_bar">
-            <div class="nav_stack nav_logo">
+            <div class="nav_logo">
                 <h2>AdminMax</h2>
             </div>
             <div class="nav_stack">
@@ -44,6 +47,11 @@
                     </div>
                 </div>
             </div>
+            <?php if (check_session()) { ?>
+                <button class="nav_button nav_button_others log_button" onclick="logout()">Log Out</button>
+            <?php } else { ?>
+                <button class="nav_button nav_button_others log_button" onclick="window.location.href = '../PM-pages/login.php';">Log In</button>
+            <?php } ?>
         </div>
 
         <div class="home_body events_bg">
@@ -51,7 +59,9 @@
 
             <div class="event_col_l">
 
+            <?php if ($_SESSION['permissions'] != "user") { ?>
                 <div class="add_button"><button onclick="openAddEvent()" class="nav_button">Add Event</button></div>
+            <?php } ?>
 
                 <div class="event_input add_event_closed" id="add_event_container">
                     <h2 class="add_event_header">Add Event</h2>
@@ -77,6 +87,7 @@
                     $event_name = $_POST['event_name'];
 
                     add_event($link, $event_name, $event_date);
+                    header("location: events.php`");
                 }
                 ?>
 
@@ -101,7 +112,7 @@
                             echo "</tr>";
                             //for each row, print corresponding data to webpage
                             while ($row = mysqli_fetch_array($res)) {
-                                if ($row['date'] < date("Y-m-d")) {
+                                if ($row['date'] >= date("Y-m-d")) {
                                     echo "<tr class='person_row'>";
                                     echo "<td class='person_data'>" . $row['event_ID'] . "</td>";
                                     echo "<td class='person_data'>" . $row['name'] . "</td>";
@@ -128,7 +139,7 @@
                             echo "</tr>";
                             //for each row, print corresponding data to webpage
                             while ($row = mysqli_fetch_array($res)) {
-                                if ($row['date'] > date("Y-m-d")) {
+                                if ($row['date'] < date("Y-m-d")) {
                                     echo "<tr class='person_row'>";
                                     echo "<td class='person_data'>" . $row['event_ID'] . "</td>";
                                     echo "<td class='person_data'>" . $row['name'] . "</td>";
@@ -178,22 +189,40 @@
                         // //for each row, print corresponding data to webpage
                         $UID_list = get_UID_list($link);
                         foreach ($UID_list as $UID) {
-                            echo "<tr class='person_row'>";
-                            echo "<td class='person_data'>" . get_user_name($link, $UID) . "</td>";
-                            echo "<td class='person_data'>";
-                            echo "<select name='att-".$ev."-".$UID."'>";
-                            echo "<option".(($res[build_col_name($link, $UID)] == 'U') ? " selected" : "") ." value='U'>Unassigned</option>";
-                            echo "<option".(($res[build_col_name($link, $UID)] == 'P') ? " selected" : "") ." value='P'>Present</option>";
-                            echo "<option".(($res[build_col_name($link, $UID)] == 'L') ? " selected" : "") ." value='L'>Late</option>";
-                            echo "<option".(($res[build_col_name($link, $UID)] == 'A') ? " selected" : "") ." value='A'>Absent</option>";
-                            echo "</select>";
-                            echo "</td>";
-                            echo "</tr>";
+                            $to_print = false;
+                            if ($UID == $_SESSION["id"]) $to_print = true;
+                            if ($_SESSION['permissions'] == "admin") $to_print = true;
+                            if (is_supervisor($link, $UID, $_SESSION["id"])) $to_print = true;
+
+                            if ($to_print) {
+                                echo "<tr class='person_row'>";
+                                echo "<td class='person_data'>" . get_user_name($link, $UID) . "</td>";
+                                echo "<td class='person_data'>";
+                                
+                                if ($_SESSION['permissions'] != "user") {
+                                    echo "<select name='att-".$ev."-".$UID."'>";
+                                    echo "<option".(($res[build_col_name($link, $UID)] == 'U') ? " selected" : "") ." value='U'>Unassigned</option>";
+                                    echo "<option".(($res[build_col_name($link, $UID)] == 'P') ? " selected" : "") ." value='P'>Present</option>";
+                                    echo "<option".(($res[build_col_name($link, $UID)] == 'L') ? " selected" : "") ." value='L'>Late</option>";
+                                    echo "<option".(($res[build_col_name($link, $UID)] == 'A') ? " selected" : "") ." value='A'>Absent</option>";
+                                    echo "</select>";
+                                } else {
+                                    switch ($res[build_col_name($link, $UID)]) {
+                                        case "A": echo "Absent"; break;
+                                        case "P": echo "Present"; break;
+                                        case "L": echo "Late"; break;
+                                        case "U": echo "Unassigned"; break;  
+                                    }
+                                }
+                                echo "</td>";
+                                echo "</tr>";
+                            }
                         }
 
                         echo "</table>";
 
-                        echo "<input type='submit' value='Update' class='nav_button' name='update-".$ev."'/></form>";
+                        if ($_SESSION['permissions'] != "user")
+                            echo "<input type='submit' value='Update' class='nav_button' name='update-".$ev."'/></form>";
 
 
                         if (array_key_exists('update-'.$ev, $_POST)) {
