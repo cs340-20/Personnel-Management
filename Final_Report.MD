@@ -22,6 +22,7 @@ void in the market and serve as a single, comprehensive personnel management ser
   provide our users with an easy to use, flexible administrative interface
 
 ### Team
+Everyone on this team contibuted to the project in different ways. We did not have specific roles, however Cainan and Alex were the main initiators in terms of work spread. This project was oriented to help with ROTC functionalities therefore Alex and Cainan shifted the work load to contibrute to that result. The roles in terms of the semester have been static. 
 
 ### Project management
 
