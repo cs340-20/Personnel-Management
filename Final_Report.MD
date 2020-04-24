@@ -8,18 +8,18 @@ void in the market and serve as a single, comprehensive personnel management ser
   
 ### Technology 
 
-  #### Front End
-    The front end structure of AdminMax is structured with standard HTML and CSS
+   #### Front End
+  The front end structure of AdminMax is structured with standard HTML and CSS
     
-  #### Back End
-    The Back end functionality for AdminMax is driven by a combination of PHP and Javascript. We leveraged PHP script to create
-    iterative, dynamic webpage functionalty. PHP gave us the ability to create dynamic HTML tables based on our stored databases 
-    and user permissions. 
+   #### Back End
+  The Back end functionality for AdminMax is driven by a combination of PHP and Javascript. We leveraged PHP script to create
+  iterative, dynamic webpage functionalty. PHP gave us the ability to create dynamic HTML tables based on our stored databases 
+  and user permissions. 
     
-  #### Database
-    The database framework utilized by AdminMax is MySQL. MySQL allowed us to create tables to represent our user base, 
-    sub-organizations, events, and attendance data. This database and query language provided us the opportunity to effectively
-    provide our users with an easy to use, flexible administrative interface
+   #### Database
+  The database framework utilized by AdminMax is MySQL. MySQL allowed us to create tables to represent our user base, 
+  sub-organizations, events, and attendance data. This database and query language provided us the opportunity to effectively
+  provide our users with an easy to use, flexible administrative interface
 
 ### Team
 
